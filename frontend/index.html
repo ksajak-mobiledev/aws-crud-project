@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Tasks</title>
+</head>
+<body>
+
+<h1>My Tasks</h1>
+
+<button onclick="loadTasks()">Load Tasks</button>
+
+<ul id="list"></ul>
+
+<script>
+async function loadTasks() {
+  const res = await fetch("http://localhost:3000/tasks");
+  const data = await res.json();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.forEach(task => {
+    const li = document.createElement("li");
+    li.innerText = task.title;
+    list.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>
