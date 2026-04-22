@@ -13,7 +13,7 @@
 
 <script>
 async function loadTasks() {
-  const res = await fetch("http://localhost:3000/tasks");
+  const res = await fetch("http://crud-alb-213659891.eu-north-1.elb.amazonaws.com/tasks");
   const data = await res.json();
 
   const list = document.getElementById("list");
