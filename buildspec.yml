@@ -1,16 +1,28 @@
 version: 0.2
 
 phases:
-  install:
+  pre_build:
     commands:
-      - echo Installing dependencies...
-      - cd backend
-      - npm install
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - ACCOUNT_ID=910929919391
+      - REGION=eu-north-1
+      - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/crud-backend
+      - IMAGE_TAG=latest
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
 
   build:
     commands:
-      - echo Build started...
-      - npm test || echo "No tests yet"
+      - echo Build started on `date`
+      - echo Building Docker image...
+      - docker build -t crud-backend .
+      - docker tag crud-backend:latest $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Pushing Docker image...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Build completed on `date`
 
 artifacts:
   files:
