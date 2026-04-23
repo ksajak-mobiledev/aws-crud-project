@@ -15,7 +15,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building Docker image...
-      - docker build -t crud-backend .
+      - docker build -t crud-backend ./backend
       - docker tag crud-backend:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
